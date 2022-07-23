@@ -1,0 +1,23 @@
+﻿<Window x:Class="stockManager.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:stockManager"
+        xmlns:lvc="clr-namespace:LiveCharts.Wpf;assembly=LiveCharts.Wpf"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="450" Width="800" Background="#1e2124">
+
+    <Grid >
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto" />
+            <ColumnDefinition Width="5*" />
+        </Grid.ColumnDefinitions>
+        <Expander  Header="Your stocks" Name="RequiredStocksExpander" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Foreground="White" >
+            <StackPanel Name="StockSelectionHolder" Orientation="Vertical" >
+                <Button Name="AddStock" Click="AddStock_Click" BorderThickness="0" Background="#424549" Foreground="White">Add Stock</Button>
+                <ListBox Name="RequiredStocksListBox" HorizontalAlignment="Left" Height="100" Margin="0,0,0,0" VerticalAlignment="Top" Width="100" Background="#FF36393E" BorderBrush="{x:Null}" BorderThickness="0" Foreground="White"/>
+            </StackPanel>
+        </Expander>
+    </Grid>
+</Window>
