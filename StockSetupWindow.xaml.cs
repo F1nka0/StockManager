@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Shapes;
 using YahooFinanceApi;
+using System.IO;
 
 namespace stockManager
 {
@@ -20,6 +21,7 @@ namespace stockManager
     /// </summary>
     public partial class StockSetupWindow : Window
     {
+        private static MainWindow BaseWindow = (MainWindow)Application.Current.Windows[0];
         public StockSetupWindow()
         {
             InitializeComponent();
@@ -45,8 +47,10 @@ namespace stockManager
             if (DSSEResult == true)
             {
                 StockSymbols.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x42, 0x45, 0x49));
-                ((MainWindow)Application.Current.Windows[0]).RequiredStocksListBox.Items.Add(StockSymbols.Text);
-                ((MainWindow)Application.Current.Windows[0]).RequiredStocksListBox.Items.Refresh();
+                BaseWindow.RequiredStocksListBox.Items.Add(StockSymbols.Text.ToUpper());
+                BaseWindow.RequiredStocksListBox.Items.Refresh();
+                BaseWindow.IsNeededToSave = true;
+                BaseWindow.Stocks.Add(new Stock(StockSymbols.Text));
                 this.Close();
             }
             else {
