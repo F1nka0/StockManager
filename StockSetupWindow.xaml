@@ -10,6 +10,7 @@
         <Label Content="Enter stock symbols" HorizontalAlignment="Left" Margin="25,25,0,0" VerticalAlignment="Top" Background="#FF1E2124" Foreground="White"/>
         <TextBox Name="StockSymbols" HorizontalAlignment="Left" Height="23" TextWrapping="Wrap" VerticalAlignment="Top" Width="120" Margin="145,28,0,0" Background="#FF424549"/>
         <Button Content="Submit" HorizontalAlignment="Left" VerticalAlignment="Top" Width="75" Margin="145,70,0,0" Click="Submit_Button_Click"/>
+        <TextBlock Name="ErrorMessage" HorizontalAlignment="Left" MaxWidth="120" Margin="145,107,0,0" TextWrapping="Wrap" VerticalAlignment="Top" FontSize="16"/>
 
     </Grid>
 </Window>

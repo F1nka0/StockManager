@@ -43,8 +43,10 @@ namespace stockManager
         }
         private async void Submit_Button_Click(object sender, RoutedEventArgs e)
         {
+
             bool DSSEResult = await DoStockSymbolsExist(StockSymbols.Text.ToUpper());
-            if (DSSEResult == true)
+            bool IsPresentInStocksCollection = BaseWindow.RequiredStocksListBox.Items.Contains(StockSymbols.Text.ToUpper());
+            if (DSSEResult == true && !IsPresentInStocksCollection)
             {
                 StockSymbols.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x42, 0x45, 0x49));
                 BaseWindow.RequiredStocksListBox.Items.Add(StockSymbols.Text.ToUpper());
@@ -53,9 +55,13 @@ namespace stockManager
                 BaseWindow.Stocks.Add(new Stock(StockSymbols.Text));
                 this.Close();
             }
+            else if (DSSEResult == true && IsPresentInStocksCollection) {
+                ErrorMessage.Text = "Stock is already present in the list";
+                ErrorMessage.Foreground = Brushes.Red;
+            }
             else {
-                StockSymbols.Text = "Stock doesn't exist";
-                StockSymbols.Background = Brushes.DarkRed;
+                ErrorMessage.Text = "Stock doesn't exist";
+                ErrorMessage.Foreground = Brushes.Red;
             }
         }
     }

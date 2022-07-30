@@ -14,6 +14,7 @@ using System.Windows.Navigation;
 using System.Windows.Shapes;
 using LiveCharts.Wpf;
 using LiveCharts;
+using LiveCharts.Helpers;
 using YahooFinanceApi;
 using System.Timers;
 namespace stockManager
@@ -57,13 +58,8 @@ namespace stockManager
         }
         private void SetupTimer() {
             StockPriceUpdater.Elapsed += GetStockPrices;
-            
         }
-        public void SaveStocksData() {
-            //using () { 
-            
-            //}
-        }
+
         public async void GetStockPrices(object sender, ElapsedEventArgs e) {
             IReadOnlyDictionary<string, Security> CurrentStockPrice;
             foreach (Stock stock in Stocks) {
@@ -76,15 +72,20 @@ namespace stockManager
             StockSetupWindow ver = new StockSetupWindow();
             ver.Show();
         }
-        //public async Task<double> GetStockPrice(string symbols) {
-        //    var price = await Yahoo.Symbols(symbols).Fields(Field.RegularMarketPrice).QueryAsync();
-        //    return price[symbols].RegularMarketPrice;
-        //}
-        private async void RequiredStocksListBox_SelectionChanged(object sender, RoutedEventArgs e)
+        private void RequiredStocksListBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
+            if (RequiredStocksListBox.SelectedItem == null) {
+                return;
+            }
+            if (SeriesCollection.Any(stock=>stock.Title== RequiredStocksListBox.SelectedItem.ToString())) {
+                SeriesCollection.Remove(SeriesCollection.First(sym=>sym.Title== RequiredStocksListBox.SelectedItem.ToString()));
+                RequiredStocksListBox.UnselectAll();
+                return;
+            }
             SymbolsOfCurrentSelectedStock = RequiredStocksListBox.SelectedItem.ToString();
-            LineSeries StockPriceData = Stocks.First(stock => stock.Symbols == SymbolsOfCurrentSelectedStock).StockGraph;//await GetStockPrices(SymbolsOfCurrentSelectedStock);
-            SeriesCollection.Add(StockPriceData/*new LineSeries() { Title = SymbolsOfCurrentSelectedStock, Values=new ChartValues<double> { StockPriceData } }*/);
+            LineSeries StockPriceData = Stocks.First(stock => stock.Symbols == SymbolsOfCurrentSelectedStock).StockGraph;
+            SeriesCollection.Add(StockPriceData);
+            RequiredStocksListBox.UnselectAll();
         }
     }
 }
