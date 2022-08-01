@@ -20,31 +20,28 @@ using System.Timers;
 namespace stockManager
 {
     public class Stock {
-        public Stock(string StockSymbols)
+        public Stock(string StockSymbols, int Offset)
         {
             Symbols = StockSymbols;
             StockGraph.Title = Symbols;
             StockGraph.Values = new ChartValues<double>();
+            this.Offset = Offset;
+            for (int StartOffset = 0; StartOffset < Offset; StartOffset++) {
+                StockGraph.Values.Add(Double.NaN);
+            }
         }
+        public int Offset{ get; }
         public string Symbols { get; }
-        private List<double> PriceHistory { get; } = new List<double>();
-        public void AddLastKnownPrice(double price) {
-            PriceHistory.Add(price);
+        public void AddLastKnownPrice(double price){
             StockGraph.Values.Add(price);
-        }
-        public List<double> GetPriceDataSet() {
-            return PriceHistory;
-        }
-        public double GetLastKnownPrice() {
-            return PriceHistory.Last();
         }
         public LineSeries StockGraph { get; } = new LineSeries();
     }
     public partial class MainWindow : Window
     {
-        public string[] Labels { get; set; }
+        public List<string> Labels { get; set; } = new List<string>();
         public Func<double, string> YFormatter { get; set; } = (src) => "$" + src;
-        public SeriesCollection SeriesCollection { get; set; } = new SeriesCollection();
+        public SeriesCollection SeriesCollection { get; set; } = new SeriesCollection() ;
         public List<Stock> Stocks = new List<Stock>();
         public bool IsNeededToSave=false;
         public string SymbolsOfCurrentSelectedStock = null;
@@ -57,14 +54,21 @@ namespace stockManager
             StockPriceUpdater.Start();
         }
         private void SetupTimer() {
-            StockPriceUpdater.Elapsed += GetStockPrices;
+             StockPriceUpdater.Elapsed += GetStockPrices;
         }
 
-        public async void GetStockPrices(object sender, ElapsedEventArgs e) {
+        public async void GetStockPrices(object sender, ElapsedEventArgs e)
+        {
             IReadOnlyDictionary<string, Security> CurrentStockPrice;
-            foreach (Stock stock in Stocks) {
-                CurrentStockPrice = await Yahoo.Symbols(stock.Symbols).Fields(Field.RegularMarketPrice).QueryAsync();
-                stock.AddLastKnownPrice(CurrentStockPrice[stock.Symbols].RegularMarketPrice);
+            if (RequiredStocksListBox.Items.Count != 0)
+            {
+                foreach (Stock stock in Stocks)
+                {
+                    CurrentStockPrice = await Yahoo.Symbols(stock.Symbols).Fields(Field.RegularMarketPrice).QueryAsync();
+                    stock.AddLastKnownPrice(CurrentStockPrice[stock.Symbols].RegularMarketPrice);
+
+                }
+                Labels.Add(DateTime.Now.ToString("HH:mm:ss"));
             }
         }
         private void AddStock_Click(object sender, RoutedEventArgs e)
@@ -85,6 +89,7 @@ namespace stockManager
             SymbolsOfCurrentSelectedStock = RequiredStocksListBox.SelectedItem.ToString();
             LineSeries StockPriceData = Stocks.First(stock => stock.Symbols == SymbolsOfCurrentSelectedStock).StockGraph;
             SeriesCollection.Add(StockPriceData);
+            
             RequiredStocksListBox.UnselectAll();
         }
     }

@@ -13,13 +13,30 @@
             <ColumnDefinition Width="auto" />
             <ColumnDefinition Width="5*" />
         </Grid.ColumnDefinitions>
-        <Expander Grid.Column="0" Header="Your stocks" Name="RequiredStocksExpander" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Foreground="White" >
-            <StackPanel Name="StockSelectionHolder" Orientation="Vertical" >
-                <Button Name="AddStock" Click="AddStock_Click" BorderThickness="0" Background="#424549" Foreground="White">Add Stock</Button>
-                <ListBox Name="RequiredStocksListBox" HorizontalAlignment="Left" Height="100" Margin="0,0,0,0" VerticalAlignment="Top" Width="100" Background="#FF36393E" BorderBrush="{x:Null}" BorderThickness="0" Foreground="White"  SelectionChanged="RequiredStocksListBox_SelectionChanged"/>
-            </StackPanel>
+        <Grid.RowDefinitions>
+            <RowDefinition></RowDefinition>
+            <RowDefinition></RowDefinition>
+        </Grid.RowDefinitions>
+        <StackPanel Name="StockManipulationPanel" Orientation="Vertical"  >
+            <Expander Grid.Column="0" Header="Your stocks" Name="RequiredStocksExpander" HorizontalAlignment="Left" Margin="0,0,0,0" VerticalAlignment="Top" Foreground="White" >
+                <StackPanel Name="StockSelectionHolder" Orientation="Vertical" >
+                    <Button Name="AddStock" Click="AddStock_Click" BorderThickness="0" Background="#424549" Foreground="White">Add Stock</Button>
+                    <ListBox Name="RequiredStocksListBox" HorizontalAlignment="Left" Height="100" Margin="0,0,0,0" VerticalAlignment="Top" Width="100" Background="#FF36393E" BorderBrush="{x:Null}" BorderThickness="0" Foreground="White"  SelectionChanged="RequiredStocksListBox_SelectionChanged"/>
+                </StackPanel>
+            </Expander>
+        </StackPanel>
+        <Expander Grid.ColumnSpan="2" Grid.Row="2" Header="Total" HorizontalAlignment="Left" VerticalAlignment="Top" Foreground="White">
+        <Path Data="m 50,50 v40 l10,-10 l-10,10 l -10,-10 l10,10" StrokeThickness="3" StrokeMiterLimit="0" StrokeEndLineCap="Round" StrokeStartLineCap="Round" StrokeLineJoin="Bevel" >
+            <Path.Stroke>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="Black" Offset="0"/>
+                    <GradientStop Color="Red" Offset="1"/>
+                </LinearGradientBrush>
+            </Path.Stroke>
+        </Path>
+
         </Expander>
-        <lvc:CartesianChart Grid.Column="1" Series="{Binding SeriesCollection}" LegendLocation="Right" >
+        <lvc:CartesianChart Zoom="X" Pan="X" Name="BaseChart" Grid.Column="1" Grid.RowSpan="2" Series="{Binding SeriesCollection}" LegendLocation="Right" Foreground="White" ScrollBarFill="#1E663636" >
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Title="Price" LabelFormatter="{Binding YFormatter}"></lvc:Axis>
             </lvc:CartesianChart.AxisY>
@@ -27,5 +44,6 @@
                 <lvc:Axis Title="Time" Labels="{Binding Labels}"></lvc:Axis>
             </lvc:CartesianChart.AxisX>
         </lvc:CartesianChart>
+
     </Grid>
 </Window>

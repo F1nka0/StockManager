@@ -31,15 +31,15 @@ namespace stockManager
                 return false;
             }
             var securities = await Yahoo.Symbols(symbols).Fields(Field.RegularMarketPrice).QueryAsync();
-            dynamic a;
+            dynamic ResultHolder;
             try
             {
-                a = securities[symbols][Field.RegularMarketPrice];
+                ResultHolder = securities[symbols][Field.RegularMarketPrice];
             }
             catch (Exception){
-                a = null;
+                ResultHolder = null;
             }
-            return a != null;
+            return ResultHolder != null;
         }
         private async void Submit_Button_Click(object sender, RoutedEventArgs e)
         {
@@ -52,7 +52,7 @@ namespace stockManager
                 BaseWindow.RequiredStocksListBox.Items.Add(StockSymbols.Text.ToUpper());
                 BaseWindow.RequiredStocksListBox.Items.Refresh();
                 BaseWindow.IsNeededToSave = true;
-                BaseWindow.Stocks.Add(new Stock(StockSymbols.Text));
+                BaseWindow.Stocks.Add(new Stock(StockSymbols.Text,BaseWindow.Labels.Count));
                 this.Close();
             }
             else if (DSSEResult == true && IsPresentInStocksCollection) {
