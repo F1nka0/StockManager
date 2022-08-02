@@ -36,7 +36,8 @@
         </Path>
 
         </Expander>
-        <lvc:CartesianChart Zoom="X" Pan="X" Name="BaseChart" Grid.Column="1" Grid.RowSpan="2" Series="{Binding SeriesCollection}" LegendLocation="Right" Foreground="White" ScrollBarFill="#1E663636" >
+        <lvc:CartesianChart DataClick="BaseChart_DataClick" Focusable="True" Zoom="X" Pan="X" Name="BaseChart" Grid.Column="1" Grid.RowSpan="2" Series="{Binding SeriesCollection}" LegendLocation="Right" Foreground="White" ScrollBarFill="#1E663636"  >
+            
             <lvc:CartesianChart.AxisY>
                 <lvc:Axis Title="Price" LabelFormatter="{Binding YFormatter}"></lvc:Axis>
             </lvc:CartesianChart.AxisY>

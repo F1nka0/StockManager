@@ -17,6 +17,7 @@ using LiveCharts;
 using LiveCharts.Helpers;
 using YahooFinanceApi;
 using System.Timers;
+using debug = System.Diagnostics.Debug;
 namespace stockManager
 {
     public class Stock {
@@ -52,6 +53,7 @@ namespace stockManager
             DataContext = this;
             SetupTimer();
             StockPriceUpdater.Start();
+            BaseChart.AnimationsSpeed = new TimeSpan(0,0,0,0,150);
         }
         private void SetupTimer() {
              StockPriceUpdater.Elapsed += GetStockPrices;
@@ -91,6 +93,22 @@ namespace stockManager
             SeriesCollection.Add(StockPriceData);
             
             RequiredStocksListBox.UnselectAll();
+        }
+
+        private void BaseChart_DataClick(object sender, ChartPoint chartPoint)
+        {
+            
+            foreach (var XAxis in BaseChart.AxisX)
+            {
+                debug.WriteLine((chartPoint.SeriesView.Title));
+                XAxis.MinValue = Stocks.First(stock=>stock.Symbols == chartPoint.SeriesView.Title).Offset;
+                XAxis.SetRange(XAxis.MinValue, double.NaN);
+            }
+            foreach (var YAxis in BaseChart.AxisY)
+            {
+                YAxis.MinValue = double.NaN;
+                YAxis.SetRange(double.NaN, double.NaN);
+            }
         }
     }
 }
