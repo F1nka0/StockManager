@@ -17,7 +17,7 @@ using LiveCharts;
 using LiveCharts.Helpers;
 using YahooFinanceApi;
 using System.Timers;
-using debug = System.Diagnostics.Debug;
+using System.IO;
 namespace stockManager
 {
     public class Stock {
@@ -42,21 +42,64 @@ namespace stockManager
     {
         public List<string> Labels { get; set; } = new List<string>();
         public Func<double, string> YFormatter { get; set; } = (src) => "$" + src;
-        public SeriesCollection SeriesCollection { get; set; } = new SeriesCollection() ;
-        public List<Stock> Stocks = new List<Stock>();
-        public bool IsNeededToSave=false;
+        public SeriesCollection SeriesCollection { get; set; } = new SeriesCollection();
+        public List<Stock> Stocks { get; set; } = new List<Stock>();
+        public List<string> NeededToSaveCollection = new List<string>();
         public string SymbolsOfCurrentSelectedStock = null;
-        public Timer StockPriceUpdater = new Timer(1000);
+        public Timer StockPriceUpdateTimer = new Timer(1000);
         public MainWindow()
         {
             InitializeComponent();
+            RetrieveStockInfo();
+            (this as Window).Closed += SaveStockInfo;
             DataContext = this;
-            SetupTimer();
-            StockPriceUpdater.Start();
             BaseChart.AnimationsSpeed = new TimeSpan(0,0,0,0,150);
+            SetupTimer(StockPriceUpdateTimer);
         }
-        private void SetupTimer() {
-             StockPriceUpdater.Elapsed += GetStockPrices;
+        private void SaveStockInfo(object sender, EventArgs e) {
+            if (NeededToSaveCollection != null)
+            {
+                using (StreamWriter SaveFile = new StreamWriter(File.Open($"{Directory.GetCurrentDirectory()}\\SavedStocks.txt", FileMode.Append, FileAccess.Write, FileShare.ReadWrite)))
+                {//TODO - go from txt to xml
+                    foreach (string SymbolSet in NeededToSaveCollection)
+                    {
+                        SaveFile.Write($"{SymbolSet}@");
+                    }
+                }
+            }
+        }
+        private void RetrieveStockInfo() {
+            string Path = $"{Directory.GetCurrentDirectory()}\\SavedStocks.txt";
+            try
+            {
+                using (StreamReader SaveFile = new StreamReader(File.Open(Path, FileMode.Open, FileAccess.ReadWrite, FileShare.ReadWrite)))
+                {//TODO - go from txt to xml
+                    foreach (string SplittedSymbols in SaveFile.ReadToEnd().Split(new char[] { '@' },StringSplitOptions.RemoveEmptyEntries))
+                    {
+                        Stocks.Add(new Stock(SplittedSymbols, 0));
+                    }
+                }
+            }
+            catch (FileNotFoundException)
+            {
+                return;
+            }
+            catch (IndexOutOfRangeException)
+            {
+                return;
+            }
+            finally
+            {
+                foreach (Stock Stock in Stocks)
+                {
+                    RequiredStocksListBox.Items.Add(Stock.Symbols);
+                    RequiredStocksListBox.Items.Refresh();
+                }
+            }
+        }
+        private void SetupTimer(Timer BaseTimer) {
+            StockPriceUpdateTimer.Elapsed += GetStockPrices;
+            BaseTimer.Start();
         }
 
         public async void GetStockPrices(object sender, ElapsedEventArgs e)
@@ -75,11 +118,13 @@ namespace stockManager
         }
         private void AddStock_Click(object sender, RoutedEventArgs e)
         {
-            StockSetupWindow ver = new StockSetupWindow();
-            ver.Show();
+            StockSetupWindow StockAdditonWindow = new StockSetupWindow();
+            StockAdditonWindow.Owner = this;
+            StockAdditonWindow.Show();
         }
         private void RequiredStocksListBox_SelectionChanged(object sender, RoutedEventArgs e)
         {
+
             if (RequiredStocksListBox.SelectedItem == null) {
                 return;
             }
@@ -90,6 +135,7 @@ namespace stockManager
             }
             SymbolsOfCurrentSelectedStock = RequiredStocksListBox.SelectedItem.ToString();
             LineSeries StockPriceData = Stocks.First(stock => stock.Symbols == SymbolsOfCurrentSelectedStock).StockGraph;
+            StockPriceData.PointGeometrySize = 5;
             SeriesCollection.Add(StockPriceData);
             
             RequiredStocksListBox.UnselectAll();
@@ -100,7 +146,6 @@ namespace stockManager
             
             foreach (var XAxis in BaseChart.AxisX)
             {
-                debug.WriteLine((chartPoint.SeriesView.Title));
                 XAxis.MinValue = Stocks.First(stock=>stock.Symbols == chartPoint.SeriesView.Title).Offset;
                 XAxis.SetRange(XAxis.MinValue, double.NaN);
             }
@@ -109,6 +154,11 @@ namespace stockManager
                 YAxis.MinValue = double.NaN;
                 YAxis.SetRange(double.NaN, double.NaN);
             }
+        }
+
+        private void RemoveStock_Click(object sender, RoutedEventArgs e)
+        {
+            //Stocks.Remove(Stocks.Where(stock => stock.Symbols == )
         }
     }
 }

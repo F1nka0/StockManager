@@ -31,3 +31,4 @@ C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\stockManager.exe
 C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\stockManager.pdb
 C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\StockSetupWindow.g.cs
 C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\StockSetupWindow.baml
+C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\GeneratedInternalTypeHelper.g.cs

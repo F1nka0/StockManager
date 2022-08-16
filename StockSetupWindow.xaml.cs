@@ -41,18 +41,20 @@ namespace stockManager
             }
             return ResultHolder != null;
         }
+
         private async void Submit_Button_Click(object sender, RoutedEventArgs e)
         {
-
             bool DSSEResult = await DoStockSymbolsExist(StockSymbols.Text.ToUpper());
             bool IsPresentInStocksCollection = BaseWindow.RequiredStocksListBox.Items.Contains(StockSymbols.Text.ToUpper());
+            Stock NeededToSaveStock;
             if (DSSEResult == true && !IsPresentInStocksCollection)
             {
+                NeededToSaveStock = new Stock(StockSymbols.Text.ToUpper(), BaseWindow.Labels.Count);
+                BaseWindow.NeededToSaveCollection.Add(NeededToSaveStock.Symbols);
                 StockSymbols.Background = new SolidColorBrush(Color.FromArgb(0xFF, 0x42, 0x45, 0x49));
                 BaseWindow.RequiredStocksListBox.Items.Add(StockSymbols.Text.ToUpper());
                 BaseWindow.RequiredStocksListBox.Items.Refresh();
-                BaseWindow.IsNeededToSave = true;
-                BaseWindow.Stocks.Add(new Stock(StockSymbols.Text,BaseWindow.Labels.Count));
+                BaseWindow.Stocks.Add(NeededToSaveStock);
                 this.Close();
             }
             else if (DSSEResult == true && IsPresentInStocksCollection) {
