@@ -16,12 +16,15 @@ C:\Users\xbox0\Desktop\stockManager\stockManager\bin\Debug\LiveCharts.xml
 C:\Users\xbox0\Desktop\stockManager\stockManager\bin\Debug\LiveCharts.Wpf.pdb
 C:\Users\xbox0\Desktop\stockManager\stockManager\bin\Debug\LiveCharts.Wpf.xml
 C:\Users\xbox0\Desktop\stockManager\stockManager\bin\Debug\Newtonsoft.Json.xml
-C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\stockManager.csprojAssemblyReference.cache
+C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\stockManager.csproj.AssemblyReference.cache
+C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\stockManager.csproj.SuggestedBindingRedirects.cache
 C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\MainWindow.g.cs
+C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\StockSetupWindow.g.cs
 C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\App.g.cs
 C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\stockManager_MarkupCompile.cache
 C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\stockManager_MarkupCompile.lref
 C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\MainWindow.baml
+C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\StockSetupWindow.baml
 C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\stockManager.g.resources
 C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\stockManager.Properties.Resources.resources
 C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\stockManager.csproj.GenerateResource.cache
@@ -29,6 +32,3 @@ C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\stockManager.csproj.C
 C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\stockManager.csproj.CopyComplete
 C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\stockManager.exe
 C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\stockManager.pdb
-C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\StockSetupWindow.g.cs
-C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\StockSetupWindow.baml
-C:\Users\xbox0\Desktop\stockManager\stockManager\obj\Debug\GeneratedInternalTypeHelper.g.cs
